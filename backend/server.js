@@ -27,7 +27,16 @@ app.use(express.json());
 
 // Serve built frontend from /public if present
 const publicDir = path.join(__dirname, "public");
-if (fs.existsSync(publicDir)) app.use(express.static(publicDir));
+
+if (fs.existsSync(publicDir)) {
+  console.log("Serving frontend from:", publicDir);
+
+  app.use(express.static(publicDir));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(publicDir, "index.html"));
+  });
+}
 
 // ── REST Routes ───────────────────────────────────────────────────────────────
 
